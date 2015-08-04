@@ -1,0 +1,1 @@
+*/15 * * * *	root	java -Duser.home=/data -jar /root/mytube.jar /var/www/html/data.json > /data/mytube.log 2>&1

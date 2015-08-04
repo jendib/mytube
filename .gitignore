@@ -1,0 +1,6 @@
+target
+.classpath
+.project
+.settings
+/src/main/resources/client/data.json
+.idea

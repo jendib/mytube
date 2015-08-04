@@ -1,0 +1,9 @@
+.video-duration {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.video-caption {
+  height: 12em;
+  overflow: hidden;
+}
