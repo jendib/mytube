@@ -5,6 +5,7 @@
  */
 angular.module('mytube').controller('Main', function($scope, Restangular, Firebase, $rootScope) {
   $scope.watchLaterPlaylist = Firebase.getPlaylist('WL');
+  $scope.error = false;
 
   $scope.watchlater = function(video) {
     var inPlaylist = _.where($scope.watchLaterPlaylist, { id: video.id });
@@ -35,8 +36,11 @@ angular.module('mytube').controller('Main', function($scope, Restangular, Fireba
   });
 
   Restangular.one('data').get().then(function(data) {
+    $scope.error = false;
     $scope.data = data;
     $rootScope.time = data.time;
     syncWatchLater();
+  }, function() {
+    $scope.error = true;
   });
 });

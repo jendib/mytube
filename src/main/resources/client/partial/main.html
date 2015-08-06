@@ -11,7 +11,13 @@
     <mytube-video video="video" watchlater="watchlater(video)" />
   </div>
 
-  <p class="text-center well-lg" ng-if="!data">
+  <p class="text-center well-lg" ng-if="!data && !error">
+    <i class="fa fa-circle-o-notch fa-spin"></i>
     Loading...
+  </p>
+
+  <p class="text-center well-lg" ng-if="!data && error">
+    <i class="fa fa-exclamation-triangle"></i>
+    Error loading subscriptions feed
   </p>
 </div>
