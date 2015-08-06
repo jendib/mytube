@@ -1,9 +1,25 @@
 <div class="row well-sm">
-  <form>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Search videos" ng-model="search" />
-    </div>
-  </form>
+  <div class="col-sm-1 text-center">
+    <button ng-click="reload()" class="btn btn-primary" title="Refresh subscriptions feed">
+      <i class="fa fa-refresh"></i>
+    </button>
+  </div>
+  <div class="col-sm-11">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon">
+            <span ng-click="search = ''"
+                  style="cursor: pointer;"
+                  class="glyphicon glyphicon-remove"
+                  title="Clear search">
+            </span>
+          </div>
+          <input type="text" class="form-control" placeholder="Search videos" ng-model="search" />
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <div class="row">

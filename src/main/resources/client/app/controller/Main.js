@@ -35,12 +35,17 @@ angular.module('mytube').controller('Main', function($scope, Restangular, Fireba
     });
   });
 
-  Restangular.one('data').get().then(function(data) {
+  $scope.reload = function() {
+    $scope.data = null;
     $scope.error = false;
-    $scope.data = data;
-    $rootScope.time = data.time;
-    syncWatchLater();
-  }, function() {
-    $scope.error = true;
-  });
+    Restangular.one('data').get().then(function (data) {
+      $scope.error = false;
+      $scope.data = data;
+      $rootScope.time = data.time;
+      syncWatchLater();
+    }, function () {
+      $scope.error = true;
+    });
+  };
+  $scope.reload();
 });

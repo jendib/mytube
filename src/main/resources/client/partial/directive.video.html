@@ -1,6 +1,6 @@
 <div class="thumbnail">
   <a ng-href="https://www.youtube.com/watch?v={{ video.id }}">
-    <img ng-src="{{ video.thumbnails.medium.url }}" title="{{ video.view_count }} views" style="min-width: 75%;" />
+    <img ng-src="{{ video.thumbnails.medium.url }}" title="{{ video.view_count }} views  +{{ video.like_count }} -{{ video.dislike_count }}" style="min-width: 75%;" />
   </a>
   <div class="caption video-caption">
     <p class="pull-left video-duration">
@@ -8,8 +8,7 @@
       {{ video.duration | duration }}
     </p>
     <p class="pull-right">
-      <span class="glyphicon glyphicon-thumbs-up"></span> {{ video.like_count }}
-      <span class="glyphicon glyphicon-thumbs-down"></span> {{ video.dislike_count }}
+      {{video.published_date | timeago }} ago
       <button ng-click="watchlater(video)" class="btn btn-default" ng-class="{ active: video.watchinglater }" title="Watch later">
         <span class="glyphicon glyphicon-pushpin"></span>
       </button>
