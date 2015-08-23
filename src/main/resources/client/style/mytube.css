@@ -7,3 +7,7 @@
   height: 12em;
   overflow: hidden;
 }
+
+.video-viewed {
+  background-color: #a1cbe9 !important;
+}
