@@ -88,7 +88,7 @@ public final class Main {
                 subscriptionRequest.setMine(true);
                 subscriptionRequest.setPageToken(nextToken);
                 subscriptionRequest.setMaxResults(50l);
-                SubscriptionListResponse subscriptionResult = subscriptionRequest.execute();
+                SubscriptionListResponse subscriptionResult = ClientRequestHelper.executeRetry(subscriptionRequest);
 
                 subscriptionList.addAll(subscriptionResult.getItems());
 
@@ -127,7 +127,7 @@ public final class Main {
             YouTube.Channels.List channelRequest = youtube.channels().list("contentDetails");
             channelRequest.setMaxResults(1l);
             channelRequest.setId(subscription.getSnippet().getResourceId().getChannelId());
-            ChannelListResponse channelResult = channelRequest.execute();
+            ChannelListResponse channelResult = ClientRequestHelper.executeRetry(channelRequest);
             List<Channel> channelList = channelResult.getItems();
             String uploadPlaylistId = channelList.get(0).getContentDetails().getRelatedPlaylists().getUploads();
             
@@ -135,7 +135,7 @@ public final class Main {
             YouTube.PlaylistItems.List playlistRequest = youtube.playlistItems().list("snippet");
             playlistRequest.setMaxResults(50l);
             playlistRequest.setPlaylistId(uploadPlaylistId);
-            PlaylistItemListResponse playlistResult = playlistRequest.execute();
+            PlaylistItemListResponse playlistResult = ClientRequestHelper.executeRetry(playlistRequest);
             
             // Get details on those videos
             List<String> idList = Lists.newArrayList();
@@ -146,7 +146,7 @@ public final class Main {
             YouTube.Videos.List videosRequest = youtube.videos().list("snippet,contentDetails,statistics");
             videosRequest.setMaxResults(50l);
             videosRequest.setId(Joiner.on(",").join(idList));
-            VideoListResponse videosResult = videosRequest.execute();
+            VideoListResponse videosResult = ClientRequestHelper.executeRetry(videosRequest);
             List<Video> videoList = videosResult.getItems();
             
             latestVideoList.addAll(videoList);
