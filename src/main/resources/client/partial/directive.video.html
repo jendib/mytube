@@ -8,7 +8,7 @@
       {{ video.duration | duration }}
     </p>
     <p class="pull-right">
-      {{video.published_date | timeago }} ago
+      <span title="{{ video.published_date | date:'short' }}">{{ video.published_date | timeago }} ago</span>
       <button ng-click="watchlater(video)" class="btn btn-default" ng-class="{ active: video.watchinglater }" title="Watch later">
         <span class="glyphicon glyphicon-pushpin"></span>
       </button>

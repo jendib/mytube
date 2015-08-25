@@ -38,7 +38,7 @@ angular.module('mytube').controller('WatchLater', function($scope, Firebase) {
             description: video.snippet.description,
             channel_id: video.snippet.channelId,
             channel_title: video.snippet.channelTitle,
-            published_date: video.snippet.publishedAt,
+            published_date: Date.parse(video.snippet.publishedAt),
             view_count: video.statistics.viewCount,
             like_count: video.statistics.likeCount,
             dislike_count: video.statistics.dislikeCount,
