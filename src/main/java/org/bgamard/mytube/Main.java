@@ -174,7 +174,7 @@ public final class Main {
         // Display videos
         JsonArrayBuilder videos = Json.createArrayBuilder();
         for (Video video : latestVideoList) {
-            videos.add(Json.createObjectBuilder()
+            videos.add(NullAwareJsonObjectBuilder.wrap(Json.createObjectBuilder())
                     .add("id", video.getId())
                     .add("title", video.getSnippet().getTitle())
                     .add("description", video.getSnippet().getDescription())
