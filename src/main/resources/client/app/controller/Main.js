@@ -6,6 +6,8 @@
 angular.module('mytube').controller('Main', function($scope, Restangular, Firebase, $rootScope) {
   $scope.watchLaterPlaylist = Firebase.getPlaylist('WL');
   $scope.viewedVideos = Firebase.getViewedVideos();
+  $scope.tags = Firebase.getTags();
+  $scope.channels = Firebase.getChannels();
   $scope.error = false;
   $scope.firebaseReady = false;
 
@@ -65,6 +67,49 @@ angular.module('mytube').controller('Main', function($scope, Restangular, Fireba
     });
   };
 
+  var syncTags = function() {
+    $scope.channels.$loaded(function() {
+      $scope.tags.$loaded(function() {
+        _.each($scope.data.videos, function (video) {
+          // For each video, check if its channel have active tags
+          var channels = _.where($scope.channels, { id: video.channel_id });
+
+          if (_.size(channels) == 0) {
+            // The channel is not tagged, visible video by default
+            video.visible = true;
+          } else {
+            var tags = channels[0].tags;
+            // The channel is tagged, does it have an active tag?
+            video.visible = false;
+            var existingNotActiveTag = false;
+            _.each(tags, function(active, id) {
+              if (active) {
+                var activeTags = _.where($scope.tags, { id: id });
+                if (_.size(activeTags) > 0) {
+                  // The tag exists
+                  if (activeTags[0].active) {
+                    video.visible = true;
+                    if (video.tags) {
+                      video.tags.push(activeTags[0]);
+                    } else {
+                      video.tags = [activeTags[0]];
+                    }
+                  } else {
+                    // We have an exising tag but not active
+                    existingNotActiveTag = true;
+                  }
+                }
+              }
+            });
+
+            if (!existingNotActiveTag) {
+              video.visible = true;9            }
+          }
+        });
+      });
+    });
+  };
+
   $scope.watchLaterPlaylist.$watch(function() {
     $scope.$apply(function() {
       syncWatchLater();
@@ -81,6 +126,7 @@ angular.module('mytube').controller('Main', function($scope, Restangular, Fireba
 
       syncViewedVideos();
       syncWatchLater();
+      syncTags();
     }, function () {
       $scope.error = true;
     });

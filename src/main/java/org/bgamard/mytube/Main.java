@@ -1,8 +1,9 @@
 package org.bgamard.mytube;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -59,11 +60,15 @@ public final class Main {
      */
     public static void main(String[] args) {
         // JSON output
-        String output = "data.json";
+        String output = ".";
         if (args.length == 1) {
             output = args[0];
         }
-        System.out.println("Outputting JSON to: " + output);
+        Path videosPath = Paths.get(output, "data.json");
+        Path subscriptionsPath = Paths.get(output, "channels.json");
+        
+        System.out.println("Outputting videos to: " + videosPath);
+        System.out.println("Outputting channels to: " + subscriptionsPath);
         
         // This OAuth 2.0 access scope allows for read-only access to the
         // authenticated user's account, but not other types of account access.
@@ -95,11 +100,14 @@ public final class Main {
                 nextToken = subscriptionResult.getNextPageToken();
             } while (nextToken != null);
 
+            // Output subscriptions
+            outputSubscriptions(subscriptionsPath, subscriptionList);
+            
             // Grab all latest videos
             getLatestVideos(subscriptionList);
             
             // Output latest videos
-            outputVideos(output);
+            outputVideos(videosPath);
         } catch (GoogleJsonResponseException e) {
             e.printStackTrace();
             System.err.println("There was a service error: " + e.getDetails().getCode() + " : "
@@ -153,13 +161,42 @@ public final class Main {
         }
     }
     
+    private static void outputSubscriptions(Path output, List<Subscription> subscriptionList) throws Exception {
+        // Display channels
+        JsonArrayBuilder channels = Json.createArrayBuilder();
+        for (Subscription subscription : subscriptionList) {
+            channels.add(NullAwareJsonObjectBuilder.wrap(Json.createObjectBuilder())
+                    .add("id", subscription.getSnippet().getResourceId().getChannelId())
+                    .add("title", subscription.getSnippet().getTitle())
+                    .add("description", subscription.getSnippet().getDescription())
+                    .add("published_date", subscription.getSnippet().getPublishedAt().getValue())
+                    .add("thumbnails", Json.createObjectBuilder()
+                            .add("default", Json.createObjectBuilder()
+                                    .add("url", subscription.getSnippet().getThumbnails().getDefault().getUrl()))
+                            .add("high", Json.createObjectBuilder()
+                                    .add("url", subscription.getSnippet().getThumbnails().getHigh().getUrl()))));
+        }
+        JsonObjectBuilder json = Json.createObjectBuilder()
+            .add("time", new Date().getTime())
+            .add("channels", channels);
+        
+        // Save the JSON file
+        Map<String, Boolean> config = new HashMap<>();
+        config.put(JsonGenerator.PRETTY_PRINTING, true);
+        JsonWriterFactory jsonWriterFactory = Json.createWriterFactory(config);
+        
+        try (OutputStream os = Files.newOutputStream(output)) {
+            jsonWriterFactory.createWriter(os).write(json.build());
+        }
+    }
+    
     /**
      * Output the videos in JSON format.
      * 
      * @param output JSON output
      * @throws Exception
      */
-    private static void outputVideos(String output) throws Exception {
+    private static void outputVideos(Path output) throws Exception {
         // Sort videos
         Collections.sort(latestVideoList, new Comparator<Video>() {
             @Override
@@ -204,7 +241,7 @@ public final class Main {
         config.put(JsonGenerator.PRETTY_PRINTING, true);
         JsonWriterFactory jsonWriterFactory = Json.createWriterFactory(config);
         
-        try (OutputStream os = new FileOutputStream(new File(output))) {
+        try (OutputStream os = Files.newOutputStream(output)) {
             jsonWriterFactory.createWriter(os).write(json.build());
         }
     }

@@ -5,7 +5,7 @@
  */
 angular.module('mytube',
         // Dependencies
-        ['ui.router', 'restangular', 'firebase'])
+        ['ui.router', 'restangular', 'firebase', 'ui.bootstrap'])
 
     /**
      * Configuring modules.
@@ -29,6 +29,15 @@ angular.module('mytube',
               'page': {
                 templateUrl: 'partial/watchlater.html',
                 controller: 'WatchLater'
+              }
+            }
+          })
+          .state('channels', {
+            url: '/channels',
+            views: {
+              'page': {
+                templateUrl: 'partial/channels.html',
+                controller: 'Channels'
               }
             }
           });
@@ -89,7 +98,7 @@ angular.module('mytube',
  * Google API init.
  */
 var googleApiInit = function() {
-  var clientId = 'GOOGLE_CLIENT_ID';
+  var clientId = '665187980114-hqo98e9626jjoqjogev6onetok73a1c1.apps.googleusercontent.com';
   var scope = 'https://www.googleapis.com/auth/youtube';
 
   setTimeout(function() {
@@ -123,4 +132,11 @@ var loadGoogleApi = function(expire) {
   setTimeout(function() {
     googleApiInit();
   }, expire * 1000)
+};
+
+var guid = function() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
+  });
 };

@@ -3,4 +3,5 @@ target
 .project
 .settings
 /src/main/resources/client/data.json
+/src/main/resources/client/channels.json
 .idea

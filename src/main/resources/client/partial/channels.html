@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-4">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="channel in data.channels | orderBy: '+title'">
+        {{ channel.title }}
+
+        <div class="dropdown pull-right" dropdown>
+          <button class="btn btn-link" dropdown-toggle>
+            Tags <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="tag in tags">
+              {{ tag.name }}
+              <input type="checkbox" ng-model="channel.tags[tag.id]" ng-change="saveTags(channel)" />
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-md-8">
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="tag in tags">
+        {{ tag.name }}
+        <input type="checkbox" ng-model="tag.active" ng-change="saveTag(tag)" />
+        <button class="btn btn-link" ng-click="deleteTag(tag)">
+          <span class="glyphicon glyphicon-remove"></span>
+        </button>
+      </li>
+    </ul>
+    <input type="text" class="form-control" ng-model="tagName" />
+    <button class="btn btn-default" ng-click="addTag()">Add</button>
+  </div>
+
+  <p class="text-center well-lg" ng-if="!data && !error">
+    <i class="fa fa-circle-o-notch fa-spin"></i>
+    Loading...
+  </p>
+
+  <p class="text-center well-lg" ng-if="!data && error">
+    <i class="fa fa-exclamation-triangle"></i>
+    Error loading channels
+  </p>
+</div>

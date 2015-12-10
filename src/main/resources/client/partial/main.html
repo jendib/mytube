@@ -24,7 +24,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-2" ng-repeat="video in data.videos | filter: search">
+  <div class="col-md-2" ng-repeat="video in data.videos | filter: search" ng-if="video.visible">
     <mytube-video video="video" watchlater="watchlater(video)" ng-class="{ 'video-viewed': !video.viewed && firebaseReady }" />
   </div>
 
