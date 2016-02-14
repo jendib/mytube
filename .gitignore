@@ -5,3 +5,5 @@ target
 /src/main/resources/client/data.json
 /src/main/resources/client/channels.json
 .idea
+/channels.json
+/data.json
