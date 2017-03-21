@@ -1,4 +1,4 @@
-FROM sismics/debian-java7:latest
+FROM sismics/debian-java:7.79.1
 MAINTAINER Benjamin Gamard <benjamin.gam@gmail.com>
 
 RUN apt-get update \
