@@ -7,3 +7,4 @@ target
 .idea
 /channels.json
 /data.json
+*.iml

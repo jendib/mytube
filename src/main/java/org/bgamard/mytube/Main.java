@@ -92,7 +92,7 @@ public final class Main {
                 YouTube.Subscriptions.List subscriptionRequest = youtube.subscriptions().list("snippet");
                 subscriptionRequest.setMine(true);
                 subscriptionRequest.setPageToken(nextToken);
-                subscriptionRequest.setMaxResults(50l);
+                subscriptionRequest.setMaxResults(50L);
                 SubscriptionListResponse subscriptionResult = ClientRequestHelper.executeRetry(subscriptionRequest);
 
                 subscriptionList.addAll(subscriptionResult.getItems());
@@ -122,7 +122,7 @@ public final class Main {
      * Get latest videos.
      * 
      * @param subscriptionList List of subscriptions
-     * @throws Exception
+     * @throws Exception e
      */
     private static void getLatestVideos(List<Subscription> subscriptionList) throws Exception {
         System.out.println("Subscriptions = " + subscriptionList.size());
@@ -133,7 +133,7 @@ public final class Main {
             
             // Grab uploads playlist from this channel
             YouTube.Channels.List channelRequest = youtube.channels().list("contentDetails");
-            channelRequest.setMaxResults(1l);
+            channelRequest.setMaxResults(1L);
             channelRequest.setId(subscription.getSnippet().getResourceId().getChannelId());
             ChannelListResponse channelResult = ClientRequestHelper.executeRetry(channelRequest);
             List<Channel> channelList = channelResult.getItems();
@@ -141,7 +141,7 @@ public final class Main {
             
             // Get 50 latest uploads from this channel
             YouTube.PlaylistItems.List playlistRequest = youtube.playlistItems().list("snippet");
-            playlistRequest.setMaxResults(50l);
+            playlistRequest.setMaxResults(50L);
             playlistRequest.setPlaylistId(uploadPlaylistId);
             PlaylistItemListResponse playlistResult = ClientRequestHelper.executeRetry(playlistRequest);
             
@@ -152,7 +152,7 @@ public final class Main {
             }
             
             YouTube.Videos.List videosRequest = youtube.videos().list("snippet,contentDetails,statistics");
-            videosRequest.setMaxResults(50l);
+            videosRequest.setMaxResults(50L);
             videosRequest.setId(Joiner.on(",").join(idList));
             VideoListResponse videosResult = ClientRequestHelper.executeRetry(videosRequest);
             List<Video> videoList = videosResult.getItems();
@@ -194,7 +194,7 @@ public final class Main {
      * Output the videos in JSON format.
      * 
      * @param output JSON output
-     * @throws Exception
+     * @throws Exception e
      */
     private static void outputVideos(Path output) throws Exception {
         // Sort videos
@@ -211,17 +211,19 @@ public final class Main {
         // Display videos
         JsonArrayBuilder videos = Json.createArrayBuilder();
         for (Video video : latestVideoList) {
-            videos.add(NullAwareJsonObjectBuilder.wrap(Json.createObjectBuilder())
+            JsonObjectBuilder json = Json.createObjectBuilder()
                     .add("id", video.getId())
                     .add("title", video.getSnippet().getTitle())
                     .add("description", video.getSnippet().getDescription())
                     .add("channel_id", video.getSnippet().getChannelId())
                     .add("channel_title", video.getSnippet().getChannelTitle())
-                    .add("published_date", video.getSnippet().getPublishedAt().getValue())
-                    .add("view_count", video.getStatistics().getViewCount())
-                    .add("like_count", video.getStatistics().getLikeCount())
-                    .add("dislike_count", video.getStatistics().getDislikeCount())
-                    .add("duration", video.getContentDetails().getDuration())
+                    .add("published_date", video.getSnippet().getPublishedAt().getValue());
+            if (video.getStatistics() != null) {
+                    json.add("view_count", video.getStatistics().getViewCount())
+                            .add("like_count", video.getStatistics().getLikeCount())
+                            .add("dislike_count", video.getStatistics().getDislikeCount());
+            }
+            json.add("duration", video.getContentDetails().getDuration())
                     .add("thumbnails", Json.createObjectBuilder()
                             .add("medium", Json.createObjectBuilder()
                                     .add("url", video.getSnippet().getThumbnails().getMedium().getUrl())
@@ -230,7 +232,8 @@ public final class Main {
                             .add("high", Json.createObjectBuilder()
                                     .add("url", video.getSnippet().getThumbnails().getHigh().getUrl())
                                     .add("width", video.getSnippet().getThumbnails().getHigh().getWidth())
-                                    .add("height", video.getSnippet().getThumbnails().getHigh().getHeight()))));
+                                    .add("height", video.getSnippet().getThumbnails().getHigh().getHeight())));
+            videos.add(NullAwareJsonObjectBuilder.wrap(json));
         }
         JsonObjectBuilder json = Json.createObjectBuilder()
             .add("time", new Date().getTime())
