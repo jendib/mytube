@@ -219,9 +219,15 @@ public final class Main {
                     .add("channel_title", video.getSnippet().getChannelTitle())
                     .add("published_date", video.getSnippet().getPublishedAt().getValue());
             if (video.getStatistics() != null) {
-                    json.add("view_count", video.getStatistics().getViewCount())
-                            .add("like_count", video.getStatistics().getLikeCount())
-                            .add("dislike_count", video.getStatistics().getDislikeCount());
+                if (video.getStatistics().getViewCount() != null) {
+                    json.add("view_count", video.getStatistics().getViewCount());
+                }
+                if (video.getStatistics().getLikeCount() != null) {
+                    json.add("like_count", video.getStatistics().getLikeCount());
+                }
+                if (video.getStatistics().getDislikeCount() != null) {
+                    json.add("dislike_count", video.getStatistics().getDislikeCount());
+                }
             }
             json.add("duration", video.getContentDetails().getDuration())
                     .add("thumbnails", Json.createObjectBuilder()
