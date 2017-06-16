@@ -137,6 +137,10 @@ public final class Main {
             channelRequest.setId(subscription.getSnippet().getResourceId().getChannelId());
             ChannelListResponse channelResult = ClientRequestHelper.executeRetry(channelRequest);
             List<Channel> channelList = channelResult.getItems();
+            if (channelList.isEmpty()) {
+                System.out.println("No channel, skipping");
+                continue;
+            }
             String uploadPlaylistId = channelList.get(0).getContentDetails().getRelatedPlaylists().getUploads();
             
             // Get 50 latest uploads from this channel
