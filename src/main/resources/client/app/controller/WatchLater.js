@@ -58,4 +58,12 @@ angular.module('mytube').controller('WatchLater', function($scope, Firebase) {
           });
         });
   };
+
+  $scope.youtubeDL = function () {
+    $scope.youtubeDLoutput = 'youtube-dl -U\n';
+    _.each($scope.data, function (video) {
+      $scope.youtubeDLoutput += 'youtube-dl -i --write-sub --all-subs --write-thumbnail -w --write-description --write-info-json --write-annotations -f \'bestvideo[height<=1080]+bestaudio/best[height<=1080]\' --merge-output-format mkv  https://www.youtube.com/watch?v=' + video.id + '\n';
+    });
+    $scope.youtubeDLoutput += '\n';
+  };
 });

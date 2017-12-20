@@ -11,3 +11,7 @@
 .video-viewed {
   background-color: #a1cbe9 !important;
 }
+
+.thumbnail {
+  padding: 0;
+}
