@@ -137,7 +137,7 @@ public final class Main {
             channelRequest.setId(subscription.getSnippet().getResourceId().getChannelId());
             ChannelListResponse channelResult = ClientRequestHelper.executeRetry(channelRequest);
             List<Channel> channelList = channelResult.getItems();
-            if (channelList.isEmpty()) {
+            if (channelList == null || channelList.isEmpty()) {
                 System.out.println("No channel, skipping");
                 continue;
             }
