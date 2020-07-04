@@ -8,3 +8,4 @@ target
 /channels.json
 /data.json
 *.iml
+dependency-reduced-pom.xml

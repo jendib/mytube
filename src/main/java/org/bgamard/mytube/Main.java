@@ -1,35 +1,26 @@
 package org.bgamard.mytube;
 
-import java.io.OutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
+import com.google.api.services.youtube.YouTube;
+import com.google.api.services.youtube.model.*;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
-
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.model.Channel;
-import com.google.api.services.youtube.model.ChannelListResponse;
-import com.google.api.services.youtube.model.PlaylistItem;
-import com.google.api.services.youtube.model.PlaylistItemListResponse;
-import com.google.api.services.youtube.model.Subscription;
-import com.google.api.services.youtube.model.SubscriptionListResponse;
-import com.google.api.services.youtube.model.Video;
-import com.google.api.services.youtube.model.VideoListResponse;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * App entry point.
@@ -92,7 +83,8 @@ public final class Main {
                 YouTube.Subscriptions.List subscriptionRequest = youtube.subscriptions().list("snippet");
                 subscriptionRequest.setMine(true);
                 subscriptionRequest.setPageToken(nextToken);
-                subscriptionRequest.setMaxResults(50L);
+                subscriptionRequest.setMaxResults(1000L);
+                subscriptionRequest.setOrder("alphabetical");
                 SubscriptionListResponse subscriptionResult = ClientRequestHelper.executeRetry(subscriptionRequest);
 
                 subscriptionList.addAll(subscriptionResult.getItems());
@@ -185,13 +177,7 @@ public final class Main {
             .add("channels", channels);
         
         // Save the JSON file
-        Map<String, Boolean> config = new HashMap<>();
-        config.put(JsonGenerator.PRETTY_PRINTING, true);
-        JsonWriterFactory jsonWriterFactory = Json.createWriterFactory(config);
-        
-        try (OutputStream os = Files.newOutputStream(output)) {
-            jsonWriterFactory.createWriter(os).write(json.build());
-        }
+        saveJsonToFile(output, json);
     }
     
     /**
@@ -202,12 +188,7 @@ public final class Main {
      */
     private static void outputVideos(Path output) throws Exception {
         // Sort videos
-        Collections.sort(latestVideoList, new Comparator<Video>() {
-            @Override
-            public int compare(Video o1, Video o2) {
-                return - Long.compare(o1.getSnippet().getPublishedAt().getValue(), o2.getSnippet().getPublishedAt().getValue());
-            }
-        });
+        latestVideoList.sort((o1, o2) -> -Long.compare(o1.getSnippet().getPublishedAt().getValue(), o2.getSnippet().getPublishedAt().getValue()));
         
         // Trim MAX_VIDEOS videos
         latestVideoList = latestVideoList.subList(0, latestVideoList.size() > MAX_VIDEOS ? MAX_VIDEOS : latestVideoList.size() - 1);
@@ -250,10 +231,14 @@ public final class Main {
             .add("videos", videos);
         
         // Save the JSON file
+        saveJsonToFile(output, json);
+    }
+
+    private static void saveJsonToFile(Path output, JsonObjectBuilder json) throws IOException {
         Map<String, Boolean> config = new HashMap<>();
         config.put(JsonGenerator.PRETTY_PRINTING, true);
         JsonWriterFactory jsonWriterFactory = Json.createWriterFactory(config);
-        
+
         try (OutputStream os = Files.newOutputStream(output)) {
             jsonWriterFactory.createWriter(os).write(json.build());
         }
