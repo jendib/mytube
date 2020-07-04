@@ -14,6 +14,7 @@ ENV APACHE_RUN_DIR /var/run/apache2
 ENV APACHE_LOCK_DIR /var/lock/apache2
 
 RUN mkdir -p /var/lock/apache2
+RUN mkdir -p /var/run/apache2
 
 EXPOSE 80
 
