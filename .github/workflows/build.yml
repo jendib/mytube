@@ -24,7 +24,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - working-directory: api
         run: mvn clean package -Pnative
-      - uses: docker/login-action@v1
+      - uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
