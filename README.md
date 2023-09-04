@@ -18,19 +18,41 @@ Features
 - Based on YouTube v3 API
 - Searchable
 
-Build & Install
----------------
+## Running the application in dev mode
 
-- Create a Firebase account to store your Watch Later playlist : [https://www.firebase.com/](https://www.firebase.com/) and grab your Firebase ID
-- On your [Google API Console](https://console.developers.google.com/project) enable the YouTube API and create a native app and web app identifier
-- Download the project at [https://github.com/jendib/mytube/archive/master.zip](https://github.com/jendib/mytube/archive/master.zip)
-- Unzip the archive and edit those files :
-- src/main/resources/client_secrets.json : Change `GOOGLE_CLIENT_ID` by your Google native app client ID, Change `GOOGLE_CLIENT_SECRET` by your native app client secret
-- src/main/resources/client/app/app.js : Change `GOOGLE_CLIENT_ID` by your Google web app client ID
-- src/main/resources/client/app/service/Firebase.js : Change `FIREBASE_ID` by your Firebase ID
-- Build the project with `mvn clean install -DskipTests` (you will need Maven 3 at least)
-- If you are using Docker, build & run the docker image with the provided `Dockerfile`
-- If you are not using Docker :
-- Expose the content of `src/main/resources/client` on a web server
-- Copy the built jar in `target/mytube-*.jar` anywhere on the same machine
-- Add [this Cron rule](https://github.com/jendib/mytube/blob/master/crontab) to your machine (don't forget to change the paths)
+You can run your application in dev mode that enables live coding using:
+```shell script
+./mvnw compile quarkus:dev
+```
+
+## Packaging and running the application
+
+The application can be packaged using:
+```shell script
+./mvnw package
+```
+It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+
+The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+
+If you want to build an _über-jar_, execute the following command:
+```shell script
+./mvnw package -Dquarkus.package.type=uber-jar
+```
+
+The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+
+## Creating a native executable
+
+You can create a native executable using: 
+```shell script
+./mvnw package -Pnative
+```
+
+Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+```shell script
+./mvnw package -Pnative -Dquarkus.native.container-build=true
+```
+
+You can then execute your native executable with: `./target/mytube-1.0.0-SNAPSHOT-runner`
