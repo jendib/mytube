@@ -16,7 +16,7 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: "maven"
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@v1.1.2.1
         with:
           version: '23.0.1.2-Final'
           java-version: '17'
