@@ -20,6 +20,7 @@ jobs:
         with:
           version: 'latest'
           java-version: '17'
+          distribution: 'mandrel'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: mvn clean package -Pnative
@@ -31,7 +32,7 @@ jobs:
       - uses: docker/setup-buildx-action@v2
       - uses: docker/build-push-action@v4
         with:
-          context: '.'
+          context: .
           tags: ghcr.io/jendib/mytube:latest
           file: src/main/docker/Dockerfile.native
           push: true
