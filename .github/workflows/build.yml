@@ -31,7 +31,7 @@ jobs:
       - uses: docker/setup-buildx-action@v2
       - uses: docker/build-push-action@v4
         with:
-          context: .
+          context: '.'
           tags: ghcr.io/jendib/mytube:latest
           file: src/main/docker/Dockerfile.native-micro
           push: true
