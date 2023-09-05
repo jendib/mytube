@@ -22,7 +22,7 @@ public class UpdateService {
     @ConfigProperty(name = "mytube.google.auth")
     String googleAuth;
 
-    @Scheduled(every = "${mytube.update.cron:off}", identity = "update-job")
+    @Scheduled(cron = "${mytube.update.cron:off}", identity = "update-job")
     @Transactional
     public void update() throws Exception {
         // This OAuth 2.0 access scope allows for read-only access to the
