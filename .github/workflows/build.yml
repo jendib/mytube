@@ -16,11 +16,10 @@ jobs:
           java-version: "17"
           distribution: "temurin"
           cache: "maven"
-      - uses: graalvm/setup-graalvm@v1.1.2.1
+      - uses: graalvm/setup-graalvm@v1
         with:
+          version: 'latest'
           java-version: '17'
-          version: 'mandrel-latest'
-          distribution: 'mandrel'
           components: 'native-image'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: mvn clean package -Pnative
