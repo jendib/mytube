@@ -1,6 +1,7 @@
 package org.bgamard.mytube.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -10,6 +11,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @MappedSuperclass
+@RegisterForReflection(targets = { UUID[].class })
 public abstract class BaseEntity extends PanacheEntityBase {
     @Id
     @UpdatableUuid
