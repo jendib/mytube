@@ -18,7 +18,7 @@ jobs:
           cache: "maven"
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: 'latest'
+          version: '23.0.1.2-Final'
           java-version: '17'
           distribution: 'mandrel'
           components: 'native-image'
