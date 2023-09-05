@@ -33,5 +33,5 @@ jobs:
         with:
           context: '.'
           tags: ghcr.io/jendib/mytube:latest
-          file: src/main/docker/Dockerfile.native-micro
+          file: src/main/docker/Dockerfile.native
           push: true
