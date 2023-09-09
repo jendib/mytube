@@ -9,6 +9,6 @@ create table video
     publishedDate timestamp not null,
     viewCount integer,
     likeCount integer,
-    duration varchar(2000) not null,
+    duration numeric not null,
     thumbnailUrl varchar(2000) not null
 );

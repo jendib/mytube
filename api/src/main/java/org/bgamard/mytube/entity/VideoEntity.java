@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class VideoEntity extends BaseEntity {
     @Column
     public Long likeCount;
     @Column(nullable = false)
-    public String duration;
+    public Duration duration;
     @Column(nullable = false)
     public String thumbnailUrl;
 
