@@ -24,6 +24,7 @@ public class UpdateService {
     @Transactional
     @TransactionConfiguration(timeout = 600)
     public void update() {
+        Log.info("Starting update");
         List<Subscription> subscriptionList = new ArrayList<>();
         String nextToken = "";
 
@@ -39,6 +40,8 @@ public class UpdateService {
 
         // Output latest videos
         saveVideos(latestVideoList);
+
+        Log.info("Update done");
     }
 
     private List<Video> getLatestVideos(List<Subscription> subscriptionList) {
@@ -76,6 +79,7 @@ public class UpdateService {
     }
 
     private void saveVideos(List<Video> latestVideoList) {
+        Log.info("Saving videos: " + latestVideoList.size());
         for (Video video : latestVideoList) {
             VideoEntity videoEntity = VideoEntity.findByYoutubeId(video.id)
                     .orElse(new VideoEntity());
