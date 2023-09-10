@@ -5,7 +5,7 @@
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="MyTube" />
+<!--              <img class="h-8 w-8" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="MyTube" />-->
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
@@ -13,6 +13,11 @@
                 <RouterLink to="/watch-later" :class="[$route.name === 'watch-later' ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white', 'rounded-md px-3 py-2 text-sm font-medium']">Watch Later</RouterLink>
               </div>
             </div>
+          </div>
+          <div>
+            <a href="https://www.youtube.com" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+              <VideoCameraIcon class="h-6 w-6 inline" /> Go to YouTube
+            </a>
           </div>
           <div class="-mr-2 flex md:hidden">
             <!-- Mobile menu button -->
@@ -45,4 +50,5 @@
 import {RouterView} from 'vue-router'
 import {Disclosure, DisclosureButton, DisclosurePanel} from '@headlessui/vue'
 import {Bars3Icon, XMarkIcon} from '@heroicons/vue/24/outline'
+import {VideoCameraIcon} from "@heroicons/vue/24/solid"
 </script>

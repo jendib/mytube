@@ -10,5 +10,7 @@ create table video
     viewCount integer,
     likeCount integer,
     duration numeric not null,
+    watchlater boolean not null,
+    seen boolean not null,
     thumbnailUrl varchar(2000) not null
 );

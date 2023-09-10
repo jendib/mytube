@@ -46,11 +46,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: docker/setup-buildx-action@v2
-      - uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_VITE_APP_API_URL: ${{ secrets.VITE_APP_API_URL }}
-          directory: web
-          file_name: .env
       - uses: docker/build-push-action@v4
         with:
           context: web

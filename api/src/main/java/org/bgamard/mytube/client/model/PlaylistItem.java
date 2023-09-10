@@ -5,12 +5,14 @@ public class PlaylistItem {
     public Snippet snippet;
 
     public static class Snippet {
+        public String playlistId;
         public ResourceId resourceId;
 
         @Override
         public String toString() {
             return "Snippet{" +
-                    "resourceId=" + resourceId +
+                    "playlistId='" + playlistId + '\'' +
+                    ", resourceId=" + resourceId +
                     '}';
         }
     }

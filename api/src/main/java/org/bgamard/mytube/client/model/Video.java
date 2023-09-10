@@ -56,12 +56,12 @@ public class Video {
     }
 
     public static class Thumbnails {
-        public Thumbnail high;
+        public Thumbnail medium;
 
         @Override
         public String toString() {
             return "Thumbnails{" +
-                    "high=" + high +
+                    "high=" + medium +
                     '}';
         }
     }

@@ -1,6 +1,7 @@
 package org.bgamard.mytube.service;
 
 import io.quarkus.logging.Log;
+import io.quarkus.narayana.jta.runtime.TransactionConfiguration;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +22,7 @@ public class UpdateService {
 
     @Scheduled(cron = "${mytube.update.cron:off}", identity = "update-job")
     @Transactional
+    @TransactionConfiguration(timeout = 600)
     public void update() {
         List<Subscription> subscriptionList = new ArrayList<>();
         String nextToken = "";
@@ -68,8 +70,6 @@ public class UpdateService {
             String ids = String.join(",", idList);
             VideoList videosResult = youtubeClientService.videos(ids, "snippet,contentDetails,statistics", 50);
             latestVideoList.addAll(videosResult.items);
-
-            break; // TODO Remove me
         }
 
         return latestVideoList;
@@ -95,7 +95,7 @@ public class UpdateService {
                 }
             }
             videoEntity.duration = video.contentDetails.duration;
-            videoEntity.thumbnailUrl = video.snippet.thumbnails.high.url;
+            videoEntity.thumbnailUrl = video.snippet.thumbnails.medium.url;
             videoEntity.persist();
         }
     }
