@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-sm border rounded-lg shadow"
-       :class="{ 'bg-gray-800 border-gray-700': modelValue.seen, 'bg-cyan-900 border-cyan-900': !modelValue.seen, 'opacity-80': modelValue.duration <= 60 }">
+       :class="{ 'bg-gray-800 border-gray-900': modelValue.seen, 'bg-amber-800 border-amber-900': !modelValue.seen, 'opacity-80': modelValue.duration <= 60 }">
     <a :href="'https://www.youtube.com/watch?v=' + modelValue.youtubeId">
       <img class="rounded-t-lg w-full" :src="modelValue.thumbnailUrl" />
     </a>
@@ -23,10 +23,10 @@
         </div>
       </div>
       <h5 class="mb-2 text-md font-bold tracking-tight text-white">
-        <a class="mr-2 text-blue-400" :href="'https://www.youtube.com/channel/' + modelValue.channelId">{{ modelValue.channelTitle }}</a>
+        <a class="mr-2 text-blue-200" :href="'https://www.youtube.com/channel/' + modelValue.channelId">{{ modelValue.channelTitle }}</a>
         <a :href="'https://www.youtube.com/watch?v=' + modelValue.youtubeId">{{ modelValue.title }}</a>
       </h5>
-      <p :title="modelValue.description" class="mb-3 overflow-hidden h-14 text-sm font-normal text-gray-400">{{ modelValue.description }}</p>
+      <p :title="modelValue.description" class="mb-3 overflow-hidden h-14 text-sm font-normal text-gray-200">{{ modelValue.description }}</p>
     </div>
   </div>
 </template>
