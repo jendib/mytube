@@ -35,26 +35,20 @@
 import {ClockIcon, EyeIcon, HeartIcon as HeartIconSolid} from "@heroicons/vue/24/solid"
 import {HeartIcon as HeartIconOutline} from "@heroicons/vue/24/outline"
 import axios from "axios";
+import formatDuration from "../utils"
 
-const props = defineProps(['modelValue'])
-const emit = defineEmits(['update:modelValue'])
+const model = defineModel()
+const emit = defineEmits(['watch-later-changed'])
 
 const markWatchLater = async (watchLater) => {
   const response = await axios.post('/video/watch-later', {}, {
     params: {
-      id: props.modelValue.id,
+      id: model.value.id,
       watchLater: watchLater
     }
   })
-  emit('update:modelValue', response.data)
-}
-
-const formatDuration = (duration) => {
-  const formatted = new Date(duration * 1000).toISOString().slice(11, 19);
-  if (duration < 3600) {
-    return formatted.substring(3);
-  }
-  return formatted;
+  model.value = response.data;
+  emit('watch-later-changed', watchLater);
 }
 
 const abbreviateNumber = (number) => {
