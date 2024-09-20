@@ -7,18 +7,16 @@
     <div class="p-5">
       <div class="flex flex-row text-sm font-bold text-white items-center pb-4">
         <div class="basis-1/2">
-          <ClockIcon class="h-6 w-6 inline" />
-          {{ formatDuration(modelValue.duration) }}
-          <EyeIcon class="ml-2 h-6 w-6 inline" />
-          {{ abbreviateNumber(modelValue.viewCount) }}
+          <span class="py-2 px-2 bg-black rounded-full">{{ formatDuration(modelValue.duration) }}</span>
+          <span class="ml-2 py-2 px-3 bg-black rounded-full">{{ abbreviateNumber(modelValue.viewCount) }} views</span>
         </div>
         <div class="basis-1/2 text-right flex items-center justify-end">
           <div class="mr-2">{{ timeAgo(modelValue.publishedDate) }}</div>
 
-          <button class="bg-white text-red-500 font-bold py-2 px-3 rounded-full text-center"
+          <button class="bg-white text-black font-bold py-2 px-2 rounded-full text-center"
                   v-on:click="markWatchLater(!modelValue.watchLater)">
-            <HeartIconSolid v-if="modelValue.watchLater"  class="h-6 w-6" />
-            <HeartIconOutline v-if="!modelValue.watchLater" class="h-6 w-6" />
+            <HandThumbUpIconSolid v-if="modelValue.watchLater"  class="h-6 w-6" />
+            <HandThumbUpIconOutline v-if="!modelValue.watchLater" class="h-6 w-6" />
           </button>
         </div>
       </div>
@@ -32,8 +30,8 @@
 </template>
 
 <script setup>
-import {ClockIcon, EyeIcon, HeartIcon as HeartIconSolid} from "@heroicons/vue/24/solid"
-import {HeartIcon as HeartIconOutline} from "@heroicons/vue/24/outline"
+import {HandThumbUpIcon as HandThumbUpIconSolid} from "@heroicons/vue/24/solid"
+import {HandThumbUpIcon as HandThumbUpIconOutline} from "@heroicons/vue/24/outline"
 import axios from "axios";
 import formatDuration from "../utils"
 
