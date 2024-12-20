@@ -11,6 +11,7 @@ import org.bgamard.mytube.client.model.*;
 import org.bgamard.mytube.entity.VideoEntity;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class UpdateService {
                     videoEntity.likeCount = video.statistics.likeCount;
                 }
             }
-            videoEntity.duration = video.contentDetails.duration;
+            videoEntity.duration = video.contentDetails.duration == null ? Duration.ZERO : video.contentDetails.duration;
             videoEntity.thumbnailUrl = video.snippet.thumbnails.medium.url;
             videoEntity.persist();
         }
