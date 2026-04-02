@@ -30,13 +30,21 @@ public class VideoResource {
     @Transactional
     public List<VideoEntity> get(
             @QueryParam("watchLaterOnly") @DefaultValue("false") boolean watchLaterOnly,
-            @QueryParam("markAllAsSeen") @DefaultValue("false") boolean markAllAsSeen) {
+            @QueryParam("markAllAsSeen") @DefaultValue("false") boolean markAllAsSeen,
+            @QueryParam("sortBy") @DefaultValue("publishedDate") String sortBy,
+            @QueryParam("sortOrder") @DefaultValue("DESC") String sortOrder) {
         String query = "from VideoEntity";
         if (watchLaterOnly) {
             query += " where watchLater = true";
         }
 
-        return VideoEntity.<VideoEntity>find(query, Sort.by("publishedDate", Sort.Direction.Descending))
+        Sort.Direction direction = "ASC".equalsIgnoreCase(sortOrder) ? Sort.Direction.Ascending : Sort.Direction.Descending;
+        List<String> validSortBy = List.of("publishedDate", "duration", "title", "channelTitle");
+        if (!validSortBy.contains(sortBy)) {
+            sortBy = "publishedDate";
+        }
+
+        return VideoEntity.<VideoEntity>find(query, Sort.by(sortBy, direction))
                 .range(0, 200)
                 .stream()
                 .peek(video -> {
