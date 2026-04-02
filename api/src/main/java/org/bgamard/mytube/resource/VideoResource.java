@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bgamard.mytube.entity.VideoEntity;
 import org.bgamard.mytube.service.UpdateService;
+import org.bgamard.mytube.service.VideoService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,9 @@ import java.util.stream.Collectors;
 public class VideoResource {
     @Inject
     UpdateService updateService;
+
+    @Inject
+    VideoService videoService;
 
     @GET
     @Transactional
@@ -51,6 +55,23 @@ public class VideoResource {
         videoEntity.watchLater = watchLater;
         videoEntity.persist();
         return videoEntity;
+    }
+
+    @POST
+    public Response addByUrl(@QueryParam("url") String url) {
+        String videoId = null;
+        if (url.contains("v=")) {
+            videoId = url.split("v=")[1].split("&")[0];
+        } else if (url.contains("youtu.be/")) {
+            videoId = url.split("youtu.be/")[1].split("\\?")[0];
+        }
+
+        if (videoId == null) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Invalid YouTube URL").build();
+        }
+
+        videoService.fetchAndSaveVideos(videoId, true);
+        return Response.ok().build();
     }
 
     @GET

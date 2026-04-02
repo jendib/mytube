@@ -8,10 +8,8 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import org.bgamard.mytube.client.YoutubeClientService;
 import org.bgamard.mytube.client.model.*;
-import org.bgamard.mytube.entity.VideoEntity;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +18,9 @@ public class UpdateService {
     @Inject
     @RestClient
     YoutubeClientService youtubeClientService;
+
+    @Inject
+    VideoService videoService;
 
     @Scheduled(cron = "${mytube.update.cron:off}", identity = "update-job")
     @Transactional
@@ -37,17 +38,13 @@ public class UpdateService {
 
 
         // Grab all latest videos
-        List<Video> latestVideoList = getLatestVideos(subscriptionList);
-
-        // Output latest videos
-        saveVideos(latestVideoList);
+        getLatestVideos(subscriptionList);
 
         Log.info("Update done");
     }
 
-    private List<Video> getLatestVideos(List<Subscription> subscriptionList) {
+    private void getLatestVideos(List<Subscription> subscriptionList) {
         Log.info("Subscriptions = " + subscriptionList.size());
-        List<Video> latestVideoList = new ArrayList<>();
 
         for (Subscription subscription : subscriptionList) {
             Log.info("Grabbing videos for = " + subscription.snippet.title
@@ -72,36 +69,7 @@ public class UpdateService {
             }
 
             String ids = String.join(",", idList);
-            VideoList videosResult = youtubeClientService.videos(ids, "snippet,contentDetails,statistics", 50);
-            latestVideoList.addAll(videosResult.items);
-        }
-
-        return latestVideoList;
-    }
-
-    private void saveVideos(List<Video> latestVideoList) {
-        Log.info("Saving videos: " + latestVideoList.size());
-        for (Video video : latestVideoList) {
-            VideoEntity videoEntity = VideoEntity.findByYoutubeId(video.id)
-                    .orElse(new VideoEntity());
-
-            videoEntity.youtubeId = video.id;
-            videoEntity.title = video.snippet.title;
-            videoEntity.description = video.snippet.description;
-            videoEntity.channelId = video.snippet.channelId;
-            videoEntity.channelTitle = video.snippet.channelTitle;
-            videoEntity.publishedDate = video.snippet.publishedAt;
-            if (video.statistics != null) {
-                if (video.statistics.viewCount != null) {
-                    videoEntity.viewCount = video.statistics.viewCount;
-                }
-                if (video.statistics.likeCount != null) {
-                    videoEntity.likeCount = video.statistics.likeCount;
-                }
-            }
-            videoEntity.duration = video.contentDetails.duration == null ? Duration.ZERO : video.contentDetails.duration;
-            videoEntity.thumbnailUrl = video.snippet.thumbnails.medium.url;
-            videoEntity.persist();
+            videoService.fetchAndSaveVideos(ids, false);
         }
     }
 }
