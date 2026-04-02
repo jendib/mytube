@@ -9,7 +9,7 @@ export const formatDuration = (duration) => {
 export const abbreviateNumber = (number) => {
   return Intl.NumberFormat('en-US', {
     notation: 'compact',
-    maximumFractionDigits: 0
+    maximumFractionDigits: 1
   }).format(number)
 }
 
@@ -23,11 +23,12 @@ export const timeAgo = (input) => {
     days: 3600 * 24,
     hours: 3600,
     minutes: 60,
-    seconds: 1
+    seconds: 0
   }
   const secondsElapsed = (date.getTime() - Date.now()) / 1000
+  if (Math.abs(secondsElapsed) < 1) return 'now'
   for (let key in ranges) {
-    if (ranges[key] < Math.abs(secondsElapsed)) {
+    if (ranges[key] <= Math.abs(secondsElapsed)) {
       const delta = secondsElapsed / ranges[key]
       return formatter.format(Math.round(delta), key)
     }
