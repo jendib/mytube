@@ -33,7 +33,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-vue": "^10.8.0",
     "jsdom": "^26.1.0",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.12",
     "prettier": "^3.8.1",
     "tailwindcss": "^4.2.2",
     "vite": "^6.4.1",
