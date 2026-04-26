@@ -11,32 +11,32 @@
     "lint": "eslint . --fix"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=24.0.0"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
-    "axios": "^1.15.0",
+    "axios": "^1.15.2",
     "pinia": "^3.0.4",
-    "vue": "^3.5.31",
-    "vue-router": "^5.0.4"
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.11",
-    "@tailwindcss/vite": "^4.2.2",
-    "@vitejs/plugin-vue": "^6.0.5",
-    "@vitest/ui": "^4.1.2",
-    "@vue/test-utils": "^2.4.6",
-    "autoprefixer": "^10.4.27",
+    "@tailwindcss/vite": "^4.2.4",
+    "@vitejs/plugin-vue": "^6.0.6",
+    "@vitest/ui": "^5.0.0-beta.1",
+    "@vue/test-utils": "^2.4.8",
+    "autoprefixer": "^10.5.0",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "eslint-plugin-vue": "^10.8.0",
+    "eslint-plugin-vue": "^10.9.0",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.12",
-    "prettier": "^3.8.1",
+    "prettier": "^3.8.3",
     "tailwindcss": "^4.2.2",
-    "vite": "^6.4.2",
-    "vitest": "^4.1.2"
+    "vite": "^8.0.10",
+    "vitest": "^5.0.0-beta.1"
   }
 }
