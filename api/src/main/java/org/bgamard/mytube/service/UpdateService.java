@@ -69,7 +69,7 @@ public class UpdateService {
             }
 
             String ids = String.join(",", idList);
-            videoService.fetchAndSaveVideos(ids, false);
+            videoService.fetchAndSaveVideos(ids, null);
         }
     }
 }

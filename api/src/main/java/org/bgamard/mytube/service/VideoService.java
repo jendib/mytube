@@ -20,12 +20,12 @@ public class VideoService {
     YoutubeClientService youtubeClientService;
 
     @Transactional
-    public void fetchAndSaveVideos(String ids, boolean watchLater) {
+    public void fetchAndSaveVideos(String ids, Boolean watchLater) {
         VideoList videosResult = youtubeClientService.videos(ids, "snippet,contentDetails,statistics", 50);
         saveVideos(videosResult.items, watchLater);
     }
 
-    public void saveVideos(List<Video> latestVideoList, boolean watchLater) {
+    public void saveVideos(List<Video> latestVideoList, Boolean watchLater) {
         Log.info("Saving videos: " + latestVideoList.size());
         for (Video video : latestVideoList) {
             VideoEntity videoEntity = VideoEntity.findByYoutubeId(video.id)
@@ -47,7 +47,9 @@ public class VideoService {
             }
             videoEntity.duration = video.contentDetails.duration == null ? Duration.ZERO : video.contentDetails.duration;
             videoEntity.thumbnailUrl = video.snippet.thumbnails.medium.url;
-            videoEntity.watchLater = watchLater;
+            if (watchLater != null) {
+                videoEntity.watchLater = watchLater;
+            }
             videoEntity.persist();
         }
     }
