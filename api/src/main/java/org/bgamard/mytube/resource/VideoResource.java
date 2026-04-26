@@ -10,15 +10,11 @@ import org.bgamard.mytube.entity.VideoEntity;
 import org.bgamard.mytube.service.UpdateService;
 import org.bgamard.mytube.service.VideoService;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Path("/video")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
 public class VideoResource {
     @Inject
     UpdateService updateService;

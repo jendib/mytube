@@ -22,6 +22,7 @@
     "vue-router": "^5.0.4"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/vite": "^4.2.2",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vitest/ui": "^4.1.2",

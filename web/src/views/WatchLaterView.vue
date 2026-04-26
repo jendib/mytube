@@ -2,11 +2,11 @@
   <div
     class="mb-6 rounded p-2 text-center text-white font-bold flex items-center justify-center gap-4"
   >
-    <div class="flex gap-2">
+    <div class="flex gap-2 mr-4">
       <input
         v-model="videoUrl"
         placeholder="Youtube URL"
-        class="rounded px-2 py-1 text-black font-normal outline-none"
+        class="rounded px-2 py-1 text-black font-normal outline-none border border-gray-300 focus:ring-2 focus:ring-blue-500"
         :disabled="videoStore.loading"
         @keyup.enter="addVideo"
       />
@@ -18,16 +18,23 @@
         Add
       </button>
     </div>
-    <div><ClockIcon class="h-6 w-6 inline" /> {{ formatDuration(totalTime) }}</div>
+    <div class="flex gap-2 mr-4"><ClockIcon class="h-6 w-6 inline" /> {{ formatDuration(totalTime) }}</div>
     <div class="flex gap-2 items-center">
-      <select v-model="sortBy" class="rounded px-2 py-1 text-black font-normal outline-none">
+      <select
+        v-model="sortBy"
+        class="mr-4 w-30 rounded px-2 py-1 text-black font-normal outline-none border border-gray-300 focus:ring-2 focus:ring-blue-500"
+      >
         <option value="publishedDate">Date</option>
         <option value="duration">Length</option>
         <option value="title">Title</option>
         <option value="channelTitle">Channel</option>
       </select>
       <label class="flex items-center gap-1 cursor-pointer select-none">
-        <input v-model="sortAsc" type="checkbox" />
+        <input
+          v-model="sortAsc"
+          type="checkbox"
+          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+        />
         Asc
       </label>
     </div>

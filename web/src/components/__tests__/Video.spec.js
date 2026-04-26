@@ -48,7 +48,7 @@ describe('Video.vue', () => {
 
   it('emits watch-later-changed when button is clicked', async () => {
     axios.post.mockResolvedValue({ data: { ...mockVideo, watchLater: true } })
-    
+
     const wrapper = mount(Video, {
       props: {
         modelValue: mockVideo
