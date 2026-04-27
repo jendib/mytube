@@ -33,6 +33,14 @@
                   <ClockIcon class="h-6 w-6 mr-2 inline" />
                   Watch Later
                 </RouterLink>
+                <div class="flex items-center">
+                  <input
+                    v-model="videoStore.filter"
+                    type="text"
+                    placeholder="Filter videos..."
+                    class="w-100 ml-4 rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-3 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -70,6 +78,14 @@
           >
             <RouterLink to="/watch-later">Watch Later</RouterLink>
           </DisclosureButton>
+          <div class="px-3 py-2">
+            <input
+              v-model="videoStore.filter"
+              type="text"
+              placeholder="Filter videos..."
+              class="w-full rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-3 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
+            />
+          </div>
         </div>
       </DisclosurePanel>
     </Disclosure>
@@ -83,8 +99,17 @@
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
+import { RouterView, useRoute } from 'vue-router'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { BookOpenIcon, ClockIcon, VideoCameraIcon } from '@heroicons/vue/24/solid'
+import { useVideoStore } from '@/stores/video'
+import { watch } from 'vue'
+
+const videoStore = useVideoStore()
+const route = useRoute()
+
+watch(() => route.path, () => {
+  videoStore.filter = ''
+})
 </script>

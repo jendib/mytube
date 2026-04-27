@@ -10,9 +10,9 @@
   </div>
   <div v-else class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
     <Video
-      v-for="(video, index) in videoStore.videos"
+      v-for="(video, index) in videoStore.filteredVideos"
       :key="video.id"
-      v-model="videoStore.videos[index]"
+      v-model="videoStore.filteredVideos[index]"
     />
   </div>
 </template>

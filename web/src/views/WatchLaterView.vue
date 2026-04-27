@@ -51,9 +51,9 @@
   </div>
   <div v-else class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-4">
     <Video
-      v-for="(video, index) in videoStore.videos"
+      v-for="(video, index) in videoStore.filteredVideos"
       :key="video.id"
-      v-model="videoStore.videos[index]"
+      v-model="videoStore.filteredVideos[index]"
       @watch-later-changed="(value) => watchLaterChanged(index, value)"
     />
   </div>
@@ -72,7 +72,7 @@ const sortBy = ref('publishedDate')
 const sortAsc = ref(false)
 
 const totalTime = computed(() => {
-  return videoStore.videos.reduce((sum, video) => sum + video.duration, 0)
+  return videoStore.filteredVideos.reduce((sum, video) => sum + video.duration, 0)
 })
 
 const fetchVideos = async () => {
@@ -100,7 +100,11 @@ const addVideo = async () => {
 
 const watchLaterChanged = (index, value) => {
   if (!value) {
-    videoStore.videos.splice(index, 1)
+    const videoToRemove = videoStore.filteredVideos[index]
+    const originalIndex = videoStore.videos.findIndex((v) => v.id === videoToRemove.id)
+    if (originalIndex !== -1) {
+      videoStore.videos.splice(originalIndex, 1)
+    }
   }
 }
 </script>

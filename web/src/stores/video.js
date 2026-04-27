@@ -1,11 +1,22 @@
 import { defineStore } from 'pinia'
 import axios from 'axios'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useVideoStore = defineStore('video', () => {
   const videos = ref([])
   const loading = ref(false)
   const error = ref(null)
+  const filter = ref('')
+
+  const filteredVideos = computed(() => {
+    if (!filter.value) return videos.value
+    const lowerFilter = filter.value.toLowerCase()
+    return videos.value.filter(
+      (v) =>
+        v.title.toLowerCase().includes(lowerFilter) ||
+        v.channelTitle.toLowerCase().includes(lowerFilter)
+    )
+  })
 
   async function fetchVideos(params = {}) {
     loading.value = true
@@ -33,5 +44,5 @@ export const useVideoStore = defineStore('video', () => {
     }
   }
 
-  return { videos, loading, error, fetchVideos, addVideo }
+  return { videos, loading, error, filter, filteredVideos, fetchVideos, addVideo }
 })
