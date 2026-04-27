@@ -33,13 +33,20 @@
                   <ClockIcon class="h-6 w-6 mr-2 inline" />
                   Watch Later
                 </RouterLink>
-                <div class="flex items-center">
+                <div class="flex items-center relative">
                   <input
                     v-model="videoStore.filter"
                     type="text"
                     placeholder="Filter videos..."
-                    class="w-100 ml-4 rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-3 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
+                    class="ml-4 rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-8 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
                   />
+                  <button
+                    v-if="videoStore.filter"
+                    @click="videoStore.filter = ''"
+                    class="absolute right-2 text-gray-400 hover:text-white"
+                  >
+                    <XMarkIcon class="h-4 w-4" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -78,13 +85,20 @@
           >
             <RouterLink to="/watch-later">Watch Later</RouterLink>
           </DisclosureButton>
-          <div class="px-3 py-2">
+          <div class="px-3 py-2 relative">
             <input
               v-model="videoStore.filter"
               type="text"
               placeholder="Filter videos..."
-              class="w-full rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-3 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
+              class="w-full rounded-md border-0 bg-gray-700 py-1.5 pl-3 pr-8 text-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-white sm:text-sm sm:leading-6 outline-none"
             />
+            <button
+              v-if="videoStore.filter"
+              @click="videoStore.filter = ''"
+              class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            >
+              <XMarkIcon class="h-4 w-4" />
+            </button>
           </div>
         </div>
       </DisclosurePanel>
