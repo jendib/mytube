@@ -23,8 +23,6 @@ public class UpdateService {
     VideoService videoService;
 
     @Scheduled(cron = "${mytube.update.cron:off}", identity = "update-job")
-    @Transactional
-    @TransactionConfiguration(timeout = 600)
     public void update() {
         Log.info("Starting update");
         List<Subscription> subscriptionList = new ArrayList<>();
