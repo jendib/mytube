@@ -16,7 +16,7 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
-    "axios": "^1.15.2",
+    "axios": "^1.18.0",
     "pinia": "^3.0.4",
     "vue": "^3.5.33",
     "vue-router": "^5.0.6"
